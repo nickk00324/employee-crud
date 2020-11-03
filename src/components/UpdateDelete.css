@@ -1,0 +1,9 @@
+.UpdateDeleteRoot {
+  width: 300px;
+  margin: 10px auto;
+}
+
+.UpdateDelete__buttons {
+  display: flex;
+  justify-content: space-between;
+}

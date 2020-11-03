@@ -1,0 +1,39 @@
+type Employee @model {
+  id: ID!
+  firstname: String!
+  lastname: String!
+  skills: [Skill!]!
+}
+
+type Skill @model {
+  id: ID!
+  name: String!
+}
+
+input CreateEmployeeInput {
+  id: ID
+  firstname: String!
+  lastname: String!
+  skills: [CreateSkillInput]
+}
+
+input CreateSkillInput {
+  id: ID
+  name: String!
+  createdAt: AWSDateTime
+  updatedAt: AWSDateTime
+}
+
+input UpdateEmployeeInput {
+  id: ID!
+  firstname: String
+  lastname: String
+  skills: [UpdateSkillInput]
+}
+
+input UpdateSkillInput {
+  id: ID!
+  name: String
+  updatedAt: AWSDateTime
+  createdAt: AWSDateTime
+}

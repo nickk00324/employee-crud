@@ -1,0 +1,11 @@
+.HeaderRoot {
+  display: flex;
+  width: 75%;
+  margin: 10px auto;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.HeaderRoot img {
+  width: 200px;
+}

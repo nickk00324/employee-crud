@@ -1,0 +1,13 @@
+.AddEmployeeFormRoot {
+  width: 500px;
+  margin: 0 auto;
+}
+
+.AddEmployeeForm__name {
+  width: 50%;
+}
+
+.AddEmployeeForm__button {
+  width: 170px;
+  margin: 20px auto;
+}

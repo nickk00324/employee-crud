@@ -1,0 +1,5 @@
+{
+    "AppSyncApiName": "employees",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false
+}

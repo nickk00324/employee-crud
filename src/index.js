@@ -1,17 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import AWSAppSyncClient from "aws-appsync";
+import AppSyncConfig from "./aws-exports";
+import { ApolloProvider } from "react-apollo";
+import { Rehydrated } from "aws-appsync-react"; // this needs to also be installed when working with React
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+import App from "./App";
+
+const client = new AWSAppSyncClient({
+  url: AppSyncConfig.aws_appsync_graphqlEndpoint,
+  region: AppSyncConfig.aws_appsync_region,
+  auth: {
+    type: AppSyncConfig.aws_appsync_authenticationType,
+    apiKey: AppSyncConfig.aws_appsync_apiKey,
+    // jwtToken: async () => token, // Required when you use Cognito UserPools OR OpenID Connect. token object is obtained previously
+  },
+});
+
+const WithProvider = () => (
+  <ApolloProvider client={client}>
+    <Rehydrated>
+      <App />
+    </Rehydrated>
+  </ApolloProvider>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+ReactDOM.render(<WithProvider />, document.getElementById("root"));
