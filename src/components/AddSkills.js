@@ -56,28 +56,30 @@ const AddSkills = () => {
             {({ data, loading, error }) => {
               if (loading) return <p>loading...</p>;
               if (error) return <p>something went wrong!</p>;
-              <>
-                <AddSkillForm
-                  onSkillChange={handleSkillChange}
-                  skills={skills}
-                  allSkills={data.listSkills.items}
-                  shouldUpdateSkills={shouldUpdateSkills}
-                />
-                <div className='AddSkills__button'>
-                  <Button
-                    variant='contained'
-                    color='primary'
-                    onClick={() =>
-                      handleSubmit(createSkill, data.listSkills.items)
-                    }
-                    disabled={skills.length === 0}
-                  >
-                    Add Skills
-                  </Button>
-                </div>
-                {creationError && <p>{error}</p>}
-                {success && <p>Skills added!</p>}
-              </>;
+              return (
+                <>
+                  <AddSkillForm
+                    onSkillChange={handleSkillChange}
+                    skills={skills}
+                    allSkills={data.listSkills.items}
+                    shouldUpdateSkills={shouldUpdateSkills}
+                  />
+                  <div className='AddSkills__button'>
+                    <Button
+                      variant='contained'
+                      color='primary'
+                      onClick={() =>
+                        handleSubmit(createSkill, data.listSkills.items)
+                      }
+                      disabled={skills.length === 0}
+                    >
+                      Add Skills
+                    </Button>
+                  </div>
+                  {creationError && <p>{error}</p>}
+                  {success && <p>Skills added!</p>}
+                </>
+              );
             }}
           </Query>
         )}
