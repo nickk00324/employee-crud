@@ -118,6 +118,8 @@ const AddEmployeeForm = (props) => {
       {(createSkill, createSkillStatus) => (
         <Query query={gql(listSkills)} fetchPolicy='no-cache'>
           {({ data, error, loading }) => {
+            if (loading) return <p>loading...</p>;
+            if (error) return <p>something went wrong!</p>;
             return (
               <form
                 className='AddEmployeeFormRoot'

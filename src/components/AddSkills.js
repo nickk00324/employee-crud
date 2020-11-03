@@ -53,7 +53,9 @@ const AddSkills = () => {
       >
         {(createSkill) => (
           <Query query={gql(listSkills)} fetchPolicy='no-cache'>
-            {({ data, loading, error }) => (
+            {({ data, loading, error }) => {
+              if (loading) return <p>loading...</p>;
+              if (error) return <p>something went wrong!</p>;
               <>
                 <AddSkillForm
                   onSkillChange={handleSkillChange}
@@ -75,8 +77,8 @@ const AddSkills = () => {
                 </div>
                 {creationError && <p>{error}</p>}
                 {success && <p>Skills added!</p>}
-              </>
-            )}
+              </>;
+            }}
           </Query>
         )}
       </Mutation>
