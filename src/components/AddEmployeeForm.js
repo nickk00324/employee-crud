@@ -5,10 +5,20 @@ import gql from "graphql-tag";
 import { withRouter } from "react-router-dom";
 
 import { createSkill } from "../graphql/mutations";
-import { listSkills } from "../graphql/queries";
 import AddSkillForm from "./AddSkillForm";
 
 import "./AddEmployeeForm.css";
+
+const getSkills = gql`
+  query ListSkills {
+    listSkills {
+      items {
+        id
+        name
+      }
+    }
+  }
+`;
 
 const AddEmployeeForm = (props) => {
   const { employee } = props;
@@ -21,7 +31,6 @@ const AddEmployeeForm = (props) => {
   const [skills, setSkills] = React.useState(
     employee ? employee.skills.map((skill) => skill.name) : []
   );
-  const [shouldUpdateSkills, setShouldUpdateSkills] = React.useState(false);
   const [wasSuccess, setWasSuccess] = React.useState(false);
 
   const handleChange = (field, e) => {
@@ -107,19 +116,20 @@ const AddEmployeeForm = (props) => {
         .then((res) => props.history.push("/employees"));
     }
 
-    // To immediately re-render the autocomplete after submission without old values persisting
-    setShouldUpdateSkills(true);
-    setTimeout(() => setShouldUpdateSkills(false), 0);
     setTimeout(() => setWasSuccess(false), 5000);
   };
 
   return (
-    <Mutation mutation={gql(createSkill)}>
+    <Mutation
+      mutation={gql(createSkill)}
+      refetchQueries={[{ query: getSkills }]}
+    >
       {(createSkill, createSkillStatus) => (
-        <Query query={gql(listSkills)} fetchPolicy='no-cache'>
+        <Query query={getSkills} fetchPolicy='no-cache'>
           {({ data, error, loading }) => {
             if (loading) return <p>loading...</p>;
             if (error) return <p>something went wrong!</p>;
+            console.log(data.listSkills.items);
             return (
               <form
                 className='AddEmployeeFormRoot'
@@ -146,7 +156,6 @@ const AddEmployeeForm = (props) => {
                   onSkillChange={handleSkillChange}
                   skills={skills}
                   allSkills={data.listSkills.items}
-                  shouldUpdateSkills={shouldUpdateSkills}
                 />
                 <div className='AddEmployeeForm__button'>
                   <Button

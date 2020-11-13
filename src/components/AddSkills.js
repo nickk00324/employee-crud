@@ -4,14 +4,23 @@ import { Mutation, Query } from "react-apollo";
 import { Button } from "@material-ui/core";
 
 import AddSkillForm from "./AddSkillForm";
-import { listSkills } from "../graphql/queries";
 import { createSkill } from "../graphql/mutations";
 
 import "./AddSkills.css";
 
+const getSkills = gql`
+  query ListSkills {
+    listSkills {
+      items {
+        id
+        name
+      }
+    }
+  }
+`;
+
 const AddSkills = () => {
   const [skills, setSkills] = React.useState([]);
-  const [shouldUpdateSkills, setShouldUpdateSkills] = React.useState(false);
   const [creationError, setCreationError] = React.useState("");
   const [success, setSuccess] = React.useState(false);
 
@@ -35,13 +44,9 @@ const AddSkills = () => {
       .then((values) => {
         setSuccess(true);
         setSkills([]);
-        setShouldUpdateSkills(true);
       })
       .catch((err) => setCreationError(err.message));
 
-    setTimeout(() => {
-      setShouldUpdateSkills(false);
-    }, 0);
     setTimeout(() => setSuccess(false), 5000);
   };
 
@@ -49,10 +54,10 @@ const AddSkills = () => {
     <div className='AddSkillsRoot'>
       <Mutation
         mutation={gql(createSkill)}
-        refetchQueries={[{ query: gql(listSkills) }]}
+        refetchQueries={[{ query: getSkills }]}
       >
         {(createSkill) => (
-          <Query query={gql(listSkills)} fetchPolicy='no-cache'>
+          <Query query={getSkills} fetchPolicy='no-cache'>
             {({ data, loading, error }) => {
               if (loading) return <p>loading...</p>;
               if (error) return <p>something went wrong!</p>;
@@ -62,7 +67,6 @@ const AddSkills = () => {
                     onSkillChange={handleSkillChange}
                     skills={skills}
                     allSkills={data.listSkills.items}
-                    shouldUpdateSkills={shouldUpdateSkills}
                   />
                   <div className='AddSkills__button'>
                     <Button

@@ -16,16 +16,18 @@ const AddSkillTags = (props) => {
   const classes = useStyles();
   const allSkills = props.allSkills.map((skill) => skill.name);
 
+  console.log(props);
+
   return (
     <div className={classes.root}>
       <Autocomplete
-        key={props.shouldUpdateSkills}
         onChange={(e, value) => {
           props.onSkillChange(value);
         }}
         multiple
         id='tags-filled'
         options={allSkills}
+        value={props.skills}
         defaultValue={props.skills}
         freeSolo
         renderTags={(value, getTagProps) => {
